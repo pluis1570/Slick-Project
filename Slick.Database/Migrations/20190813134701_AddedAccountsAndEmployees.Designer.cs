@@ -10,8 +10,8 @@ using Slick.Database;
 namespace Slick.Database.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20190809121026_Init")]
-    partial class Init
+    [Migration("20190813134701_AddedAccountsAndEmployees")]
+    partial class AddedAccountsAndEmployees
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,12 +41,55 @@ namespace Slick.Database.Migrations
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("Slick.Models.Contracts.Contract", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ConsultantId");
+
+                    b.Property<Guid>("ContractTypeId");
+
+                    b.Property<string>("DocumentUrl");
+
+                    b.Property<DateTime?>("EndDate");
+
+                    b.Property<decimal?>("Salary");
+
+                    b.Property<DateTime?>("SignedDate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultantId");
+
+                    b.HasIndex("ContractTypeId");
+
+                    b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("Slick.Models.Contracts.ContractType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContractTypes");
+                });
+
             modelBuilder.Entity("Slick.Models.People.Consultant", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid>("AddressId");
+                    b.Property<Guid?>("AddressId");
 
                     b.Property<DateTime>("Birthdate");
 
@@ -131,12 +174,24 @@ namespace Slick.Database.Migrations
                     b.ToTable("SpecialisationLevel");
                 });
 
+            modelBuilder.Entity("Slick.Models.Contracts.Contract", b =>
+                {
+                    b.HasOne("Slick.Models.People.Consultant", "Consultant")
+                        .WithMany("Contracts")
+                        .HasForeignKey("ConsultantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Slick.Models.Contracts.ContractType", "ContractType")
+                        .WithMany()
+                        .HasForeignKey("ContractTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Slick.Models.People.Consultant", b =>
                 {
                     b.HasOne("Slick.Models.Contact.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("AddressId");
                 });
 
             modelBuilder.Entity("Slick.Models.Skills.ConsultantSpecialisation", b =>

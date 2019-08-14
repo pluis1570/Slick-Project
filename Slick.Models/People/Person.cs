@@ -13,7 +13,7 @@ namespace Slick.Models.People
         [Required]
         public string LastName { get; set; }
         public string MiddleName { get; set; }
-        public Guid AddressId { get; set; }
+        public Guid? AddressId { get; set; }
         public virtual Address Address{ get; set; }
         public DateTime Birthdate { get; set; }
 

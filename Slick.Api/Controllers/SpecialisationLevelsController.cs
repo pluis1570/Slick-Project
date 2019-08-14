@@ -13,12 +13,13 @@ namespace Slick.Api.Controllers
     [ApiController]
     public class SpecialisationLevelsController : ControllerBase
     {
-        private readonly SpecialisationLevelsService specLevelService;
+        private readonly ISpecialisationLevelsService specLevelService;
 
-        public SpecialisationLevelsController(SpecialisationLevelsService specLevelService)
+        public SpecialisationLevelsController(ISpecialisationLevelsService specLevelService)
         {
             this.specLevelService = specLevelService;
         }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -33,8 +34,6 @@ namespace Slick.Api.Controllers
             return Ok(sl);
         }
 
-
-
         [HttpPost]
         public IActionResult Post(SpecialisationLevel level)
         {
@@ -43,8 +42,20 @@ namespace Slick.Api.Controllers
             return Ok(newLevel);
         }
 
+        [HttpDelete]
+        public IActionResult Delete(SpecialisationLevel level)
+        {
+            specLevelService.Delete(level);
+            return NoContent();
+        }
 
-
+        [HttpPut]
+        public IActionResult Update(SpecialisationLevel level)
+        {
+            specLevelService.Update(level);
+            return Ok(level);
+        }
     }
+    
 
 }

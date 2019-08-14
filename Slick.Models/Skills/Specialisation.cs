@@ -11,13 +11,9 @@ namespace Slick.Models.Skills
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsDeleted { get; set; }
-
-        public virtual IList<ConsultantSpecialisation> Consultant { get; set; }
-
-
+        public virtual IList<ConsultantSpecialisation> Consultant { get; set; }        
         public Guid SpecialisationLevelId { get; set; }
         public virtual SpecialisationLevel  SpecialisationLevel{ get; set; }
-
         public override string ToString()
         {
             return $"{this.Title}";
